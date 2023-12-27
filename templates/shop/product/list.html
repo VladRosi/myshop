@@ -1,0 +1,64 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+  {% if category %}
+    {{ category.name }}
+  {% else %}
+    Products
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+  <div class="grid grid-flow-col-dense grid-cols-4">
+    <div id="sidebar" class="col-span-1 bg-slate-800 text-center">
+      <h3 class="text-2xl text-amber-500">Categories</h3>
+      <br>
+      <ul>
+        <li class="p-2
+        {% if not category %} bg-orange-900 {% else %} hover:bg-green-800{% endif %}"
+        >
+          <a href="{% url "shop:product_list" %}">All</a>
+        </li>
+        {% for c in categories %}
+          <li class="p-2
+          {% if category.slug == c.slug %} bg-orange-900 {% else %} hover:bg-green-800{% endif %}"
+          >
+            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+      <br>
+    </div>
+
+    <div id="main" class="col-span-3 bg-neutral-900">
+
+      <h1 class="text-center text-4xl text-pink-500 p-2 ">
+        {% if category %}
+          {{ category.name }}
+        {% else %}
+          Products
+        {% endif %}
+      </h1>
+
+      <div class="flex flex-wrap text-center"> 
+        {% for product in products %}
+        <div class="bg-slate-800 m-2 rounded-lg" >
+          <a href="{{ product.get_absolute_url }}">
+            <img class="w-[200px] h-[200px] object-contain shadow-sm  hover:shadow-md hover:shadow-yellow-500 shadow-yellow-500 rounded-t-lg" src="
+              {% if product.image %}
+                {{ product.image.url }}
+              {% else %}
+                {% static 'img/no_image.png' %}
+              {% endif %}
+            ">
+          </a>
+          <a href="{{ product.get_absolute_url }}" class="hover:underline">{{ product.name }}</a>
+          <br>
+          ${{ product.price }}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}

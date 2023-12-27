@@ -1,0 +1,37 @@
+{% extends "shop/base.html" %}
+{% load tailwind_filters %} 
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock title %}
+
+{% block content %}
+<div class="grid grid-flow-col grid-cols-3">
+  <div class="col-span-1">
+    <img src="
+      {% if product.image %}
+        {{ product.image.url }}
+      {% else %}
+        {% static "img/no_image.png" %}
+      {% endif %}
+    ">
+  </div>
+  <div class="col-span-2 ms-5 bg-slate-800 rounded-lg p-5">
+    <h1 class="text-center text-4xl text-pink-500 p-2 ">{{ product.name }}</h1>
+    <h2 class="text-3xl text-amber-500">
+      <a href="{{ product.category.get_absotule_url }}">{{ product.category }}</a>
+    </h2>
+    <br>
+    <p class="text-2xl font-bold">${{ product.price }}</p>
+    <br>
+    <div class="w-5/12">
+      <form action="{% url "cart:cart_add" product.id %}" method="post">
+        {{ cart_product_form|crispy }}
+        {% csrf_token %}
+        <input type="submit" value="Add to cart" class="px-3 py-2 bg-blue-800 rounded-lg hover:bg-blue-600 cursor-pointer">
+    </form>
+    </div>
+    <br>
+    <p class="text-xl">{{ product.description|linebreaks }}</p>
+  </div>
+</div>
+{% endblock content %}
