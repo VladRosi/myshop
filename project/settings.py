@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-from django.conf.global_settings import STATICFILES_DIRS
+# from django.conf.global_settings import STATICFILES_DIRS
 from tests.test_settings import CRISPY_ALLOWED_TEMPLATE_PACKS, CRISPY_TEMPLATE_PACK
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,6 +28,8 @@ SECRET_KEY = "django-insecure-vxo$^26%q9tq1$erg@yoe-1y&&m!_q+5)uyvt*+tlmu*@$a*8#
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
   "cart.apps.CartConfig",
   "shop.apps.ShopConfig",
   "orders.apps.OrdersConfig",
+  "payment.apps.PaymentConfig",
 ]
 
 MIDDLEWARE = [
@@ -122,8 +125,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -138,11 +139,22 @@ INTERNAL_IPS = [
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+  BASE_DIR / 'main_staticfiles/'
+]
 
 CART_SESSION_ID = 'cart'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
 CRISPY_TEMPLATE_PACK = 'tailwind'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51ORmcgKakDnB0h0kJeZaWbWgqJ7hf9t4wsvqZgLcIEjbWhbbylirabAUnFXwwzmxQZcHWf3mmQSI4Wel78kQqhIt00vRB90dUb'
+STRIPE_SECRET_KEY = 'sk_test_51ORmcgKakDnB0h0kZsQh4APuMNqL0aLwGzjWH7RwiK85zdYzBfon2pcxPHz1heGSUztBCUQiPLwQWS7v6ED1dErV00BscdUafl'
+# STRIPE_API_VERSION = '2022-08-01'
+STRIPE_API_VERSION = '2023-10-16'
+STRIPE_WEBHOOK_SECRET = 'whsec_cea21d5c4967e18f46ff896dc7f067be660349eb21ef6701763b1a0a1fe79f17'
+
+STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = "static/"

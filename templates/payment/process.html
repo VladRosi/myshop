@@ -1,0 +1,81 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Pay your order{% endblock title %}
+
+{% block content %}
+  <h1 class="text-center text-4xl text-pink-500 p-2 ">Order summary</h1>
+
+  <div class="col-span-2 ms-5 bg-slate-800 rounded-lg p-5 ">
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase dark:text-gray-400 bg-blue-800">
+              <tr>
+                  <th scope="col" class="px-6 py-3 ">
+                      Image
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Product
+                  </th>
+                  <th scope="col" class="px-6 py-3 ">
+                      Price
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Quantity
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Total
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for item in order.items.all %}
+              <tr 
+              class="border-b border-gray-200 text-white
+               {% comment %} {% if forloop.counter|divisibleby:"2" %}bg-gray-800 {% else %}bg-gray-700{% endif %} {% endcomment %}
+              {% cycle "bg-gray-800" "bg-gray-700" %}"
+              >
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                      <img src="
+                      {% if item.product.image %}
+                        {{ item.product.image.url }}
+                      {% else %}
+                        {% static "img/no_image.png" %}  
+                      {% endif %}
+                      " class="w-[150px] h-[150px] object-contain">
+                  </th>
+                  <td class="px-6 py-4">
+                    {{ item.product.name }}
+                  </td>
+                  <td class="px-6 py-4 ">
+                   {{ item.price }}
+                  </td>
+                  <td class="px-6 py-4">
+                   {{ item.quantity }}
+                  </td>
+                  <td class="px-6 py-4 ">
+                    ${{ item.get_cost }}
+                  </td>
+              </tr>
+              {% endfor %}
+              <tr class="border-b border-gray-200 dark:border-gray-700 bg-blue-800">
+                <th colspan="4" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
+                  Total
+                </th>
+                <td class="px-6 py-4">
+                    ${{ order.get_total_cost }}  
+                </td>
+                </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <br>
+    
+  <form action="{% url "payment:process" %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Pay now" class="bg-blue-800 hover:bg-blue-700 font-bold px-5 py-2 m-2 rounded-md">
+  </form>
+  </div>
+{% endblock content %}
