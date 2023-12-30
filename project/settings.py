@@ -49,6 +49,7 @@ INSTALLED_APPS = [
   "shop.apps.ShopConfig",
   "orders.apps.OrdersConfig",
   "payment.apps.PaymentConfig",
+  "coupons.apps.CouponsConfig",
 ]
 
 MIDDLEWARE = [
@@ -158,3 +159,8 @@ STRIPE_WEBHOOK_SECRET = 'whsec_cea21d5c4967e18f46ff896dc7f067be660349eb21ef67017
 
 STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = "static/"
+
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379 
+REDIS_DB = 1

@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% load tailwind_filters %}
 
 {% block title %}Your shoping cart{% endblock title %}
 
@@ -7,7 +8,7 @@
 
 <h1 class="text-center text-4xl text-pink-500 p-2 ">Your shoping cart</h1>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+  <table class="w-full text-sm rtl:text-right text-gray-500 dark:text-gray-400 text-center">
       <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
           <tr>
               <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
@@ -42,7 +43,7 @@
                   {% else %}
                     {% static "img/no_image.png" %}  
                   {% endif %}
-                  " class="w-[150px] h-[150px] object-contain">
+                  " class="w-[150px] h-[150px] object-contain mx-auto rounded-full shadow-sm shadow-blue-700">
                 </a>
               </th>
               <td class="px-6 py-4">
@@ -50,15 +51,17 @@
               </td>
               <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                 <form action="{% url "cart:cart_add" product.id %}" method="post">
-                  {{ item.update_quantity_form.quantity }}
+                  <div class="*:rounded-lg [&]:text-blue-900">
+                    {{ item.update_quantity_form.quantity }}
+                  </div>
                   {{ item.update_quantity_form.override }}
-                  <input type="submit" value="Update" class="px-2 py-1 bg-purple-800 rounded-e-md hover:bg-purple-600">
+                  <input type="submit" value="Update" class="px-2 py-1 mt-2 bg-purple-800 rounded-md hover:bg-purple-600 hover:text-white cursor-pointer">
                   {% csrf_token %}
                 </form>
               </td>
               <td class="px-6 py-4">
                 <form action="{% url "cart:cart_remove" product.id %}" method="post">
-                  <input type="submit" value="Remove" class="px-3 py-2 text-black font-bold bg-red-600 rounded-lg hover:bg-red-400">
+                  <input type="submit" value="Remove" class="px-3 py-2 text-black font-bold bg-red-600 rounded-lg hover:bg-red-400 cursor-pointer">
                   {% csrf_token %}
                 </form>
               </td>
@@ -71,6 +74,25 @@
           </tr>
           {% endwith %}
           {% endfor %}
+
+
+          {% if cart.coupon %}
+            <tr class="border border-gray-200 dark:border-gray-700">
+              <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">Subtotal</td>
+              <td colspan="4"></td>
+              <td>${{ cart.get_total_price|floatformat:2 }}</td>
+            </tr >  
+            <tr class="border border-gray-200 dark:border-gray-700"> 
+              <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
+                "<span class="text-yellow-400 text-lg">{{ cart.coupon.code }}</span>" coupon
+                ({{ cart.coupon.discount }}% off)
+              </td>
+              <td colspan="4"></td>
+              <td class="text-rose-500">
+                - ${{ cart.get_discount|floatformat:2 }}
+              </td>
+            </tr>
+          {% endif %}
           <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
               Total
@@ -79,15 +101,48 @@
                   
             </td>
             <td class="px-6 py-4">
-              ${{ cart.get_total_price }}
+              ${{ cart.get_total_price_after_discount|floatformat:2 }}
             </td>
-            </tr>
+          </tr>
       </tbody>
   </table>
+
+  {% if recommended_products %}
+    <div class="recommendations cart">
+      <h3>People who bought this also bought</h3>
+      <div class="flex flex-wrap">
+        {% for p in recommended_products %}
+        <div class="p-2 m-2 bg-neutral-800  text-center hover:shadow-lg hover:shadow-blue-300">
+          <div class="item">
+            <a href="{{ p.get_absolute_url }}">
+              <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" class="w-[150px] h-[150px] rounded-full object-cover object-top">
+            </a>
+            <p>
+              <a href="{{ p.get_absolute_url }}" class="text-blue-500 text-lg">{{ p.name }}</a>
+            </p>
+          </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="border-2 border-green-800 p-3 rounded-lg my-2">
+    <p>Apply a coupon:</p>
+    <form action="{% url "coupons:apply" %}" method="post">
+      {% csrf_token %}
+      <div class="w-2/12">
+        {{ coupon_apply_form|crispy }}
+      </div>
+      <input type="submit" value="Apply" class="px-3 py-2 bg-rose-800 hover:bg-rose-600 rounded-lg cursor-pointer">
+    </form>
+</div>
 </div>
 <br>
 <p>
-  <a href="{% url "shop:product_list" %}" class="px-3 py-2 text-white font-bold bg-blue-600  hover:bg-blue-400 rounded-s-lg">Continue shopping</a>
-  <a href="{% url "orders:order_create" %}" class="px-3 py-2 text-white font-bold bg-green-600  hover:bg-green-400  rounded-s-lg">Checkout</a>
+  <div class="text-right">
+    <a href="{% url "shop:product_list" %}" class="px-3 py-2 text-white font-bold bg-blue-600  hover:bg-blue-400 rounded-s-lg">Continue shopping</a>
+    <a href="{% url "orders:order_create" %}" class="px-3 py-2 text-white font-bold bg-green-600  hover:bg-green-400  rounded-e-lg">Checkout</a>
+  </div>
 </p>
 {% endblock content %}

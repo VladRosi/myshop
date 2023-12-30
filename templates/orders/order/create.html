@@ -18,17 +18,26 @@
   
     <div class="col-span-1"></div>
   
-    <div class="col-span-4 bg-teal-900 p-3 border-b-4 border-blue-600 rounded-lg ">
+    <div class="col-span-4 bg-teal-900 p-3 border-b-4 border-blue-600 rounded-lg text-lg">
       <h1 class="text-center text-4xl text-pink-500 p-2 ">Your order</h1>
       <ul>
         {% for item in cart %}
-          <li>
+          <li class="text-blue-500">
             {{ item.quantity }}x {{ item.product.name }}
-            <span class="float-end">${{ item.total_price }}</span>
+            <span class="float-end text-amber-500">${{ item.total_price }}</span>
           </li>
         {% endfor %}
+        <br>
+        <hr>
+        <br>
+        {% if cart.coupon %}
+          <li class="text-blue-500">
+            "<span class="text-yellow-500">{{ cart.coupon.code }}</span>" ({{ cart.coupon.discount }}% off)
+            <span class="text-rose-500">- ${{ cart.get_discount|floatformat:2 }}</span>
+          </li>
+        {% endif %}
       </ul>
-      <p class="float-end bottom font-bold text-blue-500">Total: ${{ cart.get_total_price }}</p>
+      <p class="float-end bottom font-bold text-amber-500">Total: ${{ cart.get_total_price_after_discount|floatformat:2 }}</p>
     </div>
     
   </div>

@@ -9,7 +9,7 @@
   <div class="col-span-2 ms-5 bg-slate-800 rounded-lg p-5 ">
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase dark:text-gray-400 bg-blue-800">
               <tr>
                   <th scope="col" class="px-6 py-3 ">
@@ -49,7 +49,7 @@
                     {{ item.product.name }}
                   </td>
                   <td class="px-6 py-4 ">
-                   {{ item.price }}
+                   ${{ item.price }}
                   </td>
                   <td class="px-6 py-4">
                    {{ item.quantity }}
@@ -59,14 +59,39 @@
                   </td>
               </tr>
               {% endfor %}
+
+              {% if order.coupon %}
+                <tr class="border-b border-gray-200 dark:border-gray-700 bg-blue-800">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
+                    Subtotal
+                  </th>
+                  <td colspan="3"></td>
+                  <td class="px-6 py-4">
+                      ${{ order.get_total_cost_before_discount|floatformat:2 }}  
+                  </td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700 ">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
+                    "{{ order.coupon.code }}" coupon
+                    ({{ order.discount }}% off)
+                  </th>
+                  <td colspan="3"></td>
+                  <td class="px-6 py-4">
+                    - ${{ order.get_discount|floatformat:2 }}  
+                  </td>
+               </tr>
+              {% endif %}
+
               <tr class="border-b border-gray-200 dark:border-gray-700 bg-blue-800">
-                <th colspan="4" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  dark:text-white">
                   Total
                 </th>
+                <td colspan="3"></td>
                 <td class="px-6 py-4">
-                    ${{ order.get_total_cost }}  
+                    ${{ order.get_total_cost|floatformat:2 }}  
                 </td>
-                </tr>
+              </tr>
+
           </tbody>
       </table>
     </div>
