@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-31 21:13+0300\n"
+"PO-Revision-Date: 2023-12-31 18:17+0000\n"
+"Last-Translator:   <vlad.rosi.92@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
+
+#: cart/forms.py:11
+msgid "Quantity"
+msgstr "Количество"
+
+#: coupons/forms.py:5
+msgid "Coupon"
+msgstr "Купон"
+
+#: payment/urls.py:8
+msgid "process/"
+msgstr "процесс/"
+
+#: payment/urls.py:9
+msgid "completed/"
+msgstr "выполнено/"
+
+#: payment/urls.py:10
+msgid "canceled/"
+msgstr "отменено/"
+
+#: project/settings.py:123
+msgid "English"
+msgstr "Английский"
+
+#: project/settings.py:124
+msgid "Russian"
+msgstr "Русский"
+
+#: project/urls.py:11
+msgid "cart/"
+msgstr "корзина/"
+
+#: project/urls.py:12
+msgid "orders/"
+msgstr "заказы/"
+
+#: project/urls.py:13
+msgid "payment/"
+msgstr "оплата/"
+
+#: project/urls.py:14
+#| msgid "Coupon"
+msgid "coupons/"
+msgstr "купоны/"
+
+#: templates/orders/order/create.html:5 templates/orders/order/create.html:8
+msgid "Checkout"
+msgstr "Касса"
+
+#: templates/orders/order/create.html:16
+msgid "Place order"
+msgstr "Разместить заказ"
+
+#: templates/orders/order/create.html:23
+msgid "Your order"
+msgstr "Ваш заказ"
+
+#: templates/orders/order/create.html:37
+#, python-format
+msgid ""
+"\n"
+"              (%(discount)s %% off)\n"
+"              "
+msgstr ""
+"\n"
+"(%(discount)s %%  скидка)"
+
+#: templates/orders/order/create.html:44
+msgid "Total"
+msgstr "Обшее количество"
+
+#: templates/shop/base.html:10 templates/shop/base.html:15
+msgid "My Shop"
+msgstr "Мой магазин"
+
+#: templates/shop/base.html:22
+msgid "Your cart"
+msgstr "Ваша корзина"
+
+#: templates/shop/base.html:24
+#, python-format
+msgid ""
+"\n"
+"            %(items)s item, $%(total)s \n"
+"            "
+msgid_plural ""
+"\n"
+"            %(items)s items, $%(total)s\n"
+"            "
+msgstr[0] ""
+"\n"
+"%(items)s продукт, $%(total)s"
+msgstr[1] ""
+"\n"
+"%(items)s продуктов, $%(total)s"
+
+#: templates/shop/base.html:31
+msgid "Your cart is empty"
+msgstr "Ваша корзина пуста"
+
+#: templates/shop/product/detail.html:32
+msgid "Add to cart"
+msgstr "Добавить в корзину"
+
+#: templates/shop/product/detail.html:40
+msgid "People who bought this also bought"
+msgstr "Люди котоные купили это, купили еще"

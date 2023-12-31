@@ -1,6 +1,8 @@
 {% extends "shop/base.html" %}
+{% load i18n %}
 {% load tailwind_filters %} 
 {% load static %}
+
 
 {% block title %}{{ product.name }}{% endblock title %}
 
@@ -27,7 +29,7 @@
       <form action="{% url "cart:cart_add" product.id %}" method="post">
         {{ cart_product_form|crispy }}
         {% csrf_token %}
-        <input type="submit" value="Add to cart" class="px-3 py-2 bg-blue-800 rounded-lg hover:bg-blue-600 cursor-pointer">
+        <input type="submit" value="{% trans "Add to cart" %}" class="px-3 py-2 bg-blue-800 rounded-lg hover:bg-blue-600 cursor-pointer">
     </form>
     </div>
     <br>
@@ -35,7 +37,7 @@
     <hr class="my-3">
     {% if recommended_products %}
       <div>
-        <h3 class="text-center text-amber-500 text-3xl my-5">People who bought this also bought</h3>
+        <h3 class="text-center text-amber-500 text-3xl my-5">{% trans "People who bought this also bought" %}</h3>
         <div class="flex flex-wrap">
           {% for p in recommended_products %}
           <div class="p-2 m-2 bg-neutral-800  text-center hover:shadow-lg hover:shadow-blue-300">

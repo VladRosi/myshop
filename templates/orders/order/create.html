@@ -1,10 +1,11 @@
 {% extends "shop/base.html" %}
+{% load i18n %}
 {% load tailwind_filters %}
 
-{% block title %}Checkout{% endblock title %}
+{% block title %}{% trans "Checkout" %}{% endblock title %}
 
 {% block content %}
-  <h1 class="text-center text-4xl text-pink-500 p-2 ">Checkout</h1>
+  <h1 class="text-center text-4xl text-pink-500 p-2 ">{% trans "Checkout" %}</h1>
 
   <div class="col-span-2 ms-5 bg-slate-800 rounded-lg p-5 grid grid-cols-9">
 
@@ -12,14 +13,14 @@
       <form method="post" >
         {% csrf_token %}
         {{ form|crispy }}
-        <p><input type="submit" value="Place order" class="w-11/12 mx-auto block bg-blue-600 px-3 py-2 rounded-lg hover:shadow-md hover:shadow-blue-300"></p>
+        <p><input type="submit" value="{% trans "Place order" %}" class="w-11/12 mx-auto block bg-blue-600 px-3 py-2 rounded-lg hover:shadow-md hover:shadow-blue-300"></p>
       </form>
     </div>
   
     <div class="col-span-1"></div>
   
     <div class="col-span-4 bg-teal-900 p-3 border-b-4 border-blue-600 rounded-lg text-lg">
-      <h1 class="text-center text-4xl text-pink-500 p-2 ">Your order</h1>
+      <h1 class="text-center text-4xl text-pink-500 p-2 ">{% trans "Your order" %}</h1>
       <ul>
         {% for item in cart %}
           <li class="text-blue-500">
@@ -32,12 +33,15 @@
         <br>
         {% if cart.coupon %}
           <li class="text-blue-500">
-            "<span class="text-yellow-500">{{ cart.coupon.code }}</span>" ({{ cart.coupon.discount }}% off)
+            "<span class="text-yellow-500">{{ code }}</span>" 
+              {% blocktrans with discount=cart.coupon.discount%}
+              ({{ discount }} % off)
+              {% endblocktrans %}
             <span class="text-rose-500">- ${{ cart.get_discount|floatformat:2 }}</span>
           </li>
         {% endif %}
       </ul>
-      <p class="float-end bottom font-bold text-amber-500">Total: ${{ cart.get_total_price_after_discount|floatformat:2 }}</p>
+      <p class="float-end bottom font-bold text-amber-500">{% trans "Total" %}: ${{ cart.get_total_price_after_discount|floatformat:2 }}</p>
     </div>
     
   </div>

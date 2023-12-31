@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # from django.conf.global_settings import STATICFILES_DIRS
 from tests.test_settings import CRISPY_ALLOWED_TEMPLATE_PACKS, CRISPY_TEMPLATE_PACK
@@ -50,10 +51,14 @@ INSTALLED_APPS = [
   "orders.apps.OrdersConfig",
   "payment.apps.PaymentConfig",
   "coupons.apps.CouponsConfig",
+  'rosetta',
+  'parler',
+  'localflavor',
 ]
 
 MIDDLEWARE = [
   "django.middleware.security.SecurityMiddleware",
+  "django.middleware.locale.LocaleMiddleware",
   "django.contrib.sessions.middleware.SessionMiddleware",
   "django.middleware.common.CommonMiddleware",
   "django.middleware.csrf.CsrfViewMiddleware",
@@ -115,13 +120,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
+LANGUAGES = [
+  ('en', _('English')),
+  ("ru", _("Russian")),
+]
+LOCALE_PATHS = [
+  BASE_DIR / 'locale',
+]
 
 TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -140,16 +154,12 @@ INTERNAL_IPS = [
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-STATICFILES_DIRS = [
-  BASE_DIR / 'main_staticfiles/'
-]
+STATICFILES_DIRS = [BASE_DIR / 'main_staticfiles/']
 
 CART_SESSION_ID = 'cart'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
 CRISPY_TEMPLATE_PACK = 'tailwind'
-
-
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51ORmcgKakDnB0h0kJeZaWbWgqJ7hf9t4wsvqZgLcIEjbWhbbylirabAUnFXwwzmxQZcHWf3mmQSI4Wel78kQqhIt00vRB90dUb'
 STRIPE_SECRET_KEY = 'sk_test_51ORmcgKakDnB0h0kZsQh4APuMNqL0aLwGzjWH7RwiK85zdYzBfon2pcxPHz1heGSUztBCUQiPLwQWS7v6ED1dErV00BscdUafl'
@@ -160,7 +170,21 @@ STRIPE_WEBHOOK_SECRET = 'whsec_cea21d5c4967e18f46ff896dc7f067be660349eb21ef67017
 STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = "static/"
 
-
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6379 
+REDIS_PORT = 6379
 REDIS_DB = 1
+
+# * django-parler's settings
+PARLER_DEFAULT_LANGUAGE_CODE = 'en'
+
+PARLER_LANGUAGES = {
+  None: ({
+    'code': 'en',
+  }, {
+    'code': 'ru',
+  }),
+  'default': {
+    'fallbacks': ['en'],
+    'hide_untranslated': False,
+  }
+}

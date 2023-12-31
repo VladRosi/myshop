@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 {% load static %}
 {% load tailwind_tags %}
 <html lang="en">
@@ -6,25 +7,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% tailwind_css %}
-  <title>{% block title %}My Shop{% endblock title %}</title>
+  <title>{% block title %}{% trans "My Shop" %}{% endblock title %}</title>
 </head>
 <body class="bg-slate-900 text-white">
 
-  <div id="header" class="text-center text-5xl py-2 ">
-    <a href="/" id="logo">My Shop</a>
+<div id="header" class="flex text-2xl py-2 h-[50px]">
+  <a href="/" id="logo" class="place-self-center ms-2 text-3xl text-blue-500">{% trans "My Shop" %}</a>
+
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_available_languages as LANGUAGES %}
+  {% get_language_info_list for LANGUAGES as languages %}
+
+  <div class="languages flex ms-auto place-self-center text-xl">
+    <p class="text-blue-500">{% trans "Language" %}:
+      <ul class="languages flex *:mx-2 text-xl place-self-center ">
+        {% for language in languages %}
+          <li>
+            <a href="/{{ language.code }}/"
+            {% if language.code == LANGUAGE_CODE %}class="selected text-rose-300"{% else %}class="hover:text-blue-300"{% endif %} >
+              {{ language.name_local }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </p>
   </div>
+
+</div>
 
   <div id="subheader" class="bg-teal-900 p-2 flex ">
     <div id="cart" class="text-xl text-amber-500 ms-auto pe-2">
       {% with total_items=cart|length %}
         {% if total_items > 0 %}
-            Your cart:
+            {% trans "Your cart" %}:
           <a href="{% url "cart:cart_detail" %}" class="text-blue-500 hover:text-blue-400 hover:underline">
-            {{ total_items }} item{{ total_items|pluralize }},
-            ${{ cart.get_total_price }}
+            {% blocktrans with total=cart.get_total_price count items=total_items %}
+            {{ items }} item, ${{ total }} 
+            {% plural %}
+            {{ items }} items, ${{ total }}
+            {% endblocktrans %}
           </a>
         {% elif not order %}
-          Your cart is empty.
+          {% trans "Your cart is empty" %}.
         {% else %}
           Your cart.
         {% endif %}
